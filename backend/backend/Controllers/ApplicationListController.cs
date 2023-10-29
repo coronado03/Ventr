@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using DotnetWebApiWithEFCodeFirst.Models;
+using Microsoft.AspNetCore.Cors;
 
 namespace DotnetWebApiWithEFCodeFirst.Controllers
 {
+    [EnableCors("AllowAnyOrigin")]
     [Route("api/[controller]")]
     [ApiController]
     public class ApplicationListController : ControllerBase
