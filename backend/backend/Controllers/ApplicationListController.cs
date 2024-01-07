@@ -15,14 +15,12 @@ namespace DotnetWebApiWithEFCodeFirst.Controllers
             _context = context;
         }
 
-        // GET: api/Customer
         [HttpGet]
         public ActionResult<IEnumerable<ApplicationList>> GetApplicationList()
         {
             return _context.ApplicationList.ToList();
         }
 
-        // GET: api/Customer/1
         [HttpGet("{id}")]
         public ActionResult<ApplicationList> GetApplicationList(int id)
         {
@@ -34,7 +32,6 @@ namespace DotnetWebApiWithEFCodeFirst.Controllers
             return customer;
         }
 
-        // POST: api/Customer
         [HttpPost]
         public ActionResult<ApplicationList> CreateCustomer(ApplicationList ApplicationList)
         {
