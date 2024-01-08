@@ -6,7 +6,7 @@ export default function ApplicationListItem({ data }: ApplicationListItemProps) 
 
   return (
     <>
-    <tr className="border border-slate-600">        
+    <tr className="[&>*]:border [&>*]:border-b-0 [&>*]:border-slate-600">        
       <td>{data.applicationId}</td>   
       <td>{data.companyName}</td>
       <td>{data.jobRole}</td>
