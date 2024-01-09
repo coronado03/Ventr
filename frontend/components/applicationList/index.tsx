@@ -6,14 +6,19 @@ export default function ApplicationList() {
   const [data, setData] = useState<ApplicationList[]>();
   const [loading, setIsLoading] = useState<boolean>(false);
 
-  useEffect(()=>{
-    console.log(data)
-  }, [data])
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
 
-  const getApplicationList = () => {
+  const getApplicationList = (filter?: string) => {
     setIsLoading(true);
-    fetch('https://localhost:7188/api/ApplicationList')
-      .then(resp => {
+
+    const sortOrderParam = filter === 'desc' ? 'desc' : 'asc';
+    const apiUrl = `https://localhost:7188/api/ApplicationList?sortOrder=${sortOrderParam}`;
+    
+    console.log(apiUrl);
+    fetch(apiUrl)
+      .then((resp) => {
         if (!resp.ok) {
           throw new Error(`Network response was not ok: ${resp.status}`);
         }
@@ -23,13 +28,13 @@ export default function ApplicationList() {
         setData(data);
         setIsLoading(false);
       })
-      .catch(error => console.error(error));
-    }
+      .catch((error) => console.error(error));
+  };
 
   return (
     <main className="flex flex-col w-screen items-center">
-      <ApplicationListGrid data={data} loading={loading}/>
+      <ApplicationListGrid data={data} refetch={getApplicationList} loading={loading} />
       <button onClick={getApplicationList}> TOUCH </button>
     </main>
-  )
+  );
 }

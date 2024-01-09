@@ -8,6 +8,7 @@ import { columnHeaders } from "./columnHeaders";
 export default function ApplicationListGrid({
   data,
   loading,
+  refetch,
 }: ApplicationListGridProps) {
   const initialFilteringStates: (string | null)[] = Array(
     Object.values(columnHeaders).length
@@ -17,11 +18,14 @@ export default function ApplicationListGrid({
   );
 
   const onFilterClick = (index: number) => {
+    // filter by desc or asc id
     const updatedFilteringList = [...filteringStates];
     if (filteringStates[index] === "desc") {
       updatedFilteringList[index] = "asc";
+      refetch("asc");
     } else {
       updatedFilteringList[index] = "desc";
+      refetch("desc");
     }
     setFilteringStates(updatedFilteringList);
   };

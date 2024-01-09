@@ -16,9 +16,13 @@ namespace DotnetWebApiWithEFCodeFirst.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<ApplicationList>> GetApplicationList()
+        public ActionResult<IEnumerable<ApplicationList>> GetApplicationList([FromQuery] string sortOrder = "desc")
         {
-            return _context.ApplicationList.ToList();
+            IQueryable<ApplicationList> query = _context.ApplicationList;
+
+            query = sortOrder.ToLower() == "desc" ? query.OrderByDescending(app => app.ApplicationId) : query.OrderBy(app => app.ApplicationId);
+
+            return query.ToList();
         }
 
         [HttpGet("{id}")]
