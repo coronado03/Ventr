@@ -10,22 +10,22 @@ export default function ApplicationListGrid({
   loading,
   refetch,
 }: ApplicationListGridProps) {
-  const initialFilteringStates: (string | null)[] = Array(
-    Object.values(columnHeaders).length
-  ).fill(null);
-  const [filteringStates, setFilteringStates] = useState(
-    initialFilteringStates
-  );
+
+  const initialFilteringStates: (string | null)[][] = Object.keys(columnHeaders).map(key => [key, null]);
+
+  const [filteringStates, setFilteringStates] = useState(initialFilteringStates);
 
   const onFilterClick = (index: number) => {
-    // filter by desc or asc id
     const updatedFilteringList = [...filteringStates];
-    if (filteringStates[index] === "desc") {
-      updatedFilteringList[index] = "asc";
-      refetch("asc");
+   
+    console.log(updatedFilteringList)
+
+    if (filteringStates[index][1]  === "desc") {
+      updatedFilteringList[index][1] = "asc";
+      refetch(updatedFilteringList[index]);
     } else {
-      updatedFilteringList[index] = "desc";
-      refetch("desc");
+      updatedFilteringList[index][1] = "desc";
+      refetch(updatedFilteringList[index]);
     }
     setFilteringStates(updatedFilteringList);
   };
@@ -44,7 +44,7 @@ export default function ApplicationListGrid({
                 {columnHeaders[columnName]}
                 <button
                   className={`justify-self-end ${
-                    filteringStates[index] === "desc" ? "rotate-180" : ""
+                    filteringStates[index][1] === "desc" ? "rotate-180" : ""
                   }`}
                   onClick={() => onFilterClick(index)}
                 >

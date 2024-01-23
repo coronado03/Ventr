@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using DotnetWebApiWithEFCodeFirst.Models;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.Data.SqlClient;
 
 namespace DotnetWebApiWithEFCodeFirst.Controllers
 {
@@ -16,14 +17,43 @@ namespace DotnetWebApiWithEFCodeFirst.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<ApplicationList>> GetApplicationList([FromQuery] string sortOrder = "desc")
+        public ActionResult<IEnumerable<ApplicationList>> GetApplications([FromQuery] string? applicationId = null, string? companyName = null, string? stateOfApplication = null)
         {
             IQueryable<ApplicationList> query = _context.ApplicationList;
 
-            query = sortOrder.ToLower() == "desc" ? query.OrderByDescending(app => app.ApplicationId) : query.OrderBy(app => app.ApplicationId);
+            if (!string.IsNullOrEmpty(applicationId))
+            {
+                query = applicationId == "desc"
+                    ? query.OrderByDescending(a => a.ApplicationId)
+                    : query.OrderBy(a => a.ApplicationId);
+            }
 
-            return query.ToList();
+            if (!string.IsNullOrEmpty(companyName))
+            {
+                query = companyName == "desc"
+                    ? query.OrderByDescending(a => a.CompanyName)
+                    : query.OrderBy(a => a.CompanyName);
+            }
+
+            if (!string.IsNullOrEmpty(stateOfApplication))
+            {
+                query = stateOfApplication == "desc"
+                    ? query.OrderByDescending(a => a.StateOfApplication)
+                    : query.OrderBy(a => a.StateOfApplication);
+            }
+
+            var result = query.ToList();
+
+            if (result.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return result;
         }
+
+
+
 
         [HttpGet("{id}")]
         public ActionResult<ApplicationList> GetApplicationList(int id)
