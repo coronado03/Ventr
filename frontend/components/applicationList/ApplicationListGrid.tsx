@@ -17,9 +17,11 @@ export default function ApplicationListGrid({
 
   const onFilterClick = (index: number) => {
     const updatedFilteringList = [...filteringStates];
-   
-    console.log(updatedFilteringList)
-
+    // This for loop turns all the other sortbys off
+    for (let i=0; i < updatedFilteringList.length; i++) {
+      if (index != i)
+        updatedFilteringList[i][1] = null;
+    }
     if (filteringStates[index][1]  === "desc") {
       updatedFilteringList[index][1] = "asc";
       refetch(updatedFilteringList[index]);
@@ -28,6 +30,8 @@ export default function ApplicationListGrid({
       refetch(updatedFilteringList[index]);
     }
     setFilteringStates(updatedFilteringList);
+    console.log(filteringStates)
+
   };
 
   if (!data || data.length === 0) {
@@ -35,13 +39,13 @@ export default function ApplicationListGrid({
   }
 
   return (
-    <table className="table-fixed border border-collapse border-slate-600 w-full md:px-10">
+    <table className="table-fixed border border-collapse border-blue-200 w-full md:w-10/12 md:mx-auto">
       <thead>
-        <tr className="border border-slate-600">
+        <tr className="border border-blue-200">
           {Object.keys(columnHeaders).map((columnName, index) => (
-            <th className="text-start border border-slate-600" key={columnName}>
+            <th className="text-center items-center bg-sky-100 border border-blue-200	 text-slate-700" key={columnName}>
               <div className="flex flex-row w-full">
-                {columnHeaders[columnName]}
+                <p className="text-lg font-semibold pl-3">{columnHeaders[columnName]}</p>
                 <button
                   className={`justify-self-end ${
                     filteringStates[index][1] === "desc" ? "rotate-180" : ""
